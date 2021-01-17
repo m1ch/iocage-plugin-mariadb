@@ -6,24 +6,28 @@ sysrc mysql_optfile=/usr/local/etc/my.cnf
 mkdir /var/log/mysql
 chown mysql /var/log/mysql
 
+echo "Start mariaDB server"
 service mysql-server start
 
 USER="root"
 openssl rand -base64 23  > /root/mysqlrootpassword
 PASS=$(</root/mysqlrootpassword)
 
+echo "Passwort = $PASS"
+
 # set mysql-password
 mysqladmin --user=root password "$PASS"
+echo "MySQL passwort set"
 
 # Configure mysql
-mysql -u root -p"${PASS}" <<-EOF
+mysql -u root -p"${PASS}" << EOF
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${PASS}';
 GRANT ALL PRIVILEGES ON *.* TO '${USER}'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 DROP DATABASE IF EXISTS test;
 EOF
 
-chmod +x /usr/local/bin/adminer.sh
+# chmod +x /usr/local/bin/adminer.sh
 echo "@reboot /usr/locat/bin/adminer.sh" | crontab -
 
 # /usr/local/www/adminer # php -S ip:8080
@@ -31,5 +35,5 @@ echo "@reboot /usr/locat/bin/adminer.sh" | crontab -
 # sudo -u www php /usr/local/www/nextcloud/occ
 
 # Save the config values 
-echo "$DB" > /root/dbname
-echo "$USER" > /root/dbuser
+#echo "$DB" > /root/dbname
+#echo "$USER" > /root/dbuser
