@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Very simple script to return the default passwords created for the database
+case $1 in
+	dbname) cat /root/dbname ;;
+	dbuser) cat /root/dbuser ;;
+	dbpassword) cat /root/dbpassword ;;
+	*) echo "Unknown option" ;;
+esac
