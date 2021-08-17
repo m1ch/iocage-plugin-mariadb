@@ -27,9 +27,7 @@ echo "MySQL passwort set"
 # Configure mysql
 mysql -u $MYUSER -p"${PASS}" << EOF
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${PASS}';
-ALTER USER 'root'@'127.0.0.1' IDENTIFIED BY '${PASS}';
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 DROP DATABASE IF EXISTS test;
 EOF
