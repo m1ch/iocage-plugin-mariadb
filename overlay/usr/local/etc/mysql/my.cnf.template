@@ -1,7 +1,7 @@
 [client]
 # password       = your_password
 port            = 3306
-socket          = /tmp/mysql.sock
+socket          = /var/run/mysql/mysql.sock
 
 ## SERVER ##
 [mysqld]
@@ -9,7 +9,7 @@ socket          = /tmp/mysql.sock
 user                            = mysql
 server_id                       = 1
 port                            = 3306
-# socket                          = /var/run/mysql/mysql.sock
+socket                          = /var/run/mysql/mysql.sock
 datadir                         = /var/db/mysql
  
 pid-file                        = /var/db/mysql/mysql.pid
