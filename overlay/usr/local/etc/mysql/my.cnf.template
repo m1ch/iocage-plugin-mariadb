@@ -9,7 +9,7 @@ socket          = /tmp/mysql.sock
 user                            = mysql
 server_id                       = 1
 port                            = 3306
-socket                          = /var/run/mysql/mysql.sock
+# socket                          = /var/run/mysql/mysql.sock
 datadir                         = /var/db/mysql
  
 pid-file                        = /var/db/mysql/mysql.pid
@@ -33,7 +33,7 @@ log-bin                        = mysql-bin
 binlog_format                  = mixed
 expire_logs_days               = 10
 max_binlog_size                = 100Mbin
-log-basename                   = my_lead1
+log-basename                   = <hostname>
 
 
 [mysqldump]

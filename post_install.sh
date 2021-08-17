@@ -33,6 +33,8 @@ FLUSH PRIVILEGES;
 DROP DATABASE IF EXISTS test;
 EOF
 
+
+echo "Configure and start adminer"
 chmod +x /usr/local/bin/adminer.sh
 chmod +x /usr/local/etc/rc.d/adminer
 
