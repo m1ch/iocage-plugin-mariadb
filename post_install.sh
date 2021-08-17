@@ -6,11 +6,16 @@ sysrc mysql_pidfile=/var/db/mysql/mysql.pid
 mkdir /var/log/mysql
 chown mysql /var/log/mysql
 
+CFG_FILE="/usr/local/etc/mysql/my.cnf"
+sed -e "s/<hostname>/$(hostname)/" ${CFG_FILE}.template > ${CFG_FILE}
+
 echo "Start mariaDB server"
 service mysql-server start
 
 MYUSER="root"
-openssl rand -base64 23 | sed -e 's/=//g' > /root/mysqlrootpassword
+# openssl rand -base64 23 | sed -e 's/=//g' > /root/mysqlrootpassword
+(cat /dev/urandom | strings | tr -dc A-Za-z0-9\?\!\.\#\(\) | head -c86; echo) > /root/mysqlrootpassword
+
 PASS=$(</root/mysqlrootpassword)
 
 echo "Passwort = $PASS"
@@ -28,12 +33,15 @@ FLUSH PRIVILEGES;
 DROP DATABASE IF EXISTS test;
 EOF
 
-# chmod +x /usr/local/bin/adminer.sh
-echo "@reboot /usr/local/bin/adminer.sh" | crontab -
+chmod +x /usr/local/bin/adminer.sh
+chmod +x /usr/local/etc/rc.d/adminer
 
-at now + 1minute << EOL
-/usr/local/bin/adminer.sh
-EOL
+sysrc adminer_enable="YES"
+service adminer start
+
+#echo "@reboot /usr/local/bin/adminer.sh" | crontab -
+
+#daemon -p /var/run/adminer.pid bash -c 'cd /usr/local/www/adminer; php -S `ifconfig | grep "inet " | grep -v 127.0.0.1 | cut -d" " -f2`:8080' > /dev/null
 
 # /usr/local/www/adminer # php -S ip:8080
 # php -S `ifconfig | grep "inet " | grep -v 127.0.0.1 | cut -d" " -f2`:8080
