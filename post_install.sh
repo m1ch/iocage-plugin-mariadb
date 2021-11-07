@@ -33,12 +33,12 @@ DROP DATABASE IF EXISTS test;
 EOF
 
 
-echo "Configure and start adminer"
-chmod +x /usr/local/bin/adminer.sh
-chmod +x /usr/local/etc/rc.d/adminer
+# echo "Configure and start adminer"
+# chmod +x /usr/local/bin/adminer.sh
+# chmod +x /usr/local/etc/rc.d/adminer
 
-sysrc adminer_enable="YES"
-service adminer start
+# sysrc adminer_enable="YES"
+# service adminer start
 
 #echo "@reboot /usr/local/bin/adminer.sh" | crontab -
 
