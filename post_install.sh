@@ -7,7 +7,7 @@ mkdir /var/log/mysql
 chown mysql /var/log/mysql
 
 CFG_FILE="/usr/local/etc/mysql/my.cnf"
-sed -e "s/<hostname>/$(hostname)/" ${CFG_FILE}.template > ${CFG_FILE}
+# sed -e "s/<hostname>/$(hostname)/" ${CFG_FILE}.template > ${CFG_FILE}
 
 echo "Start mariaDB server"
 service mysql-server start
