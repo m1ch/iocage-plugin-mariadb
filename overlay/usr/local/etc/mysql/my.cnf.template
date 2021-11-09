@@ -1,54 +1,36 @@
+
+[client-server]
+socket                     = /var/run/mysql/mysql.sock
+
 [client]
-# password       = your_password
-port            = 3306
-socket          = /var/run/mysql/mysql.sock
+default-character-set      = utf8mb4
 
 ## SERVER ##
-[mysqld]
-# bind-address                    = 128.0.0.1
-user                            = mysql
-server_id                       = 1
-port                            = 3306
-socket                          = /var/run/mysql/mysql.sock
-datadir                         = /var/db/mysql
- 
+[server]
+skip_name_resolve = 1
+innodb_buffer_pool_size = 128M
+innodb_buffer_pool_instances = 1
+innodb_flush_log_at_trx_commit = 2
+innodb_log_buffer_size = 32M
+innodb_max_dirty_pages_pct = 90
+query_cache_type = 1
+query_cache_limit = 2M
+query_cache_min_res_unit = 2k
+query_cache_size = 64M
+tmp_table_size= 64M
+max_heap_table_size= 64M
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 1
+
+[mysqld] 
 pid-file                        = /var/db/mysql/mysql.pid
- 
-log-error                      = /var/log/mysql/mysql-error.log
-log-queries-not-using-indexes  = 1
-slow-query-log                 = 1
-slow-query-log-file            = /var/log/mysql/mysql-slow.log
-
-skip-external-locking
-key_buffer_size                = 16M
-max_allowed_packet             = 32M
-table_open_cache               = 64
-sort_buffer_size               = 512K
-net_buffer_length              = 8K
-read_buffer_size               = 256K
-read_rnd_buffer_size           = 512K
-myisam_sort_buffer_size        = 8M
-
-log-bin                        = mysql-bin
-binlog_format                  = mixed
-expire_logs_days               = 10
-max_binlog_size                = 100Mbin
-log-basename                   = <hostname>
-
-
-[mysqldump]
-quick
-max_allowed_packet             = 16M
-
-[mysql]
-no-auto-rehash
-safe-updates
-
-[myisamchk]
-key_buffer_size = 20M
-sort_buffer_size = 20M
-read_buffer = 2M
-write_buffer = 2M
-
-[mysqlhotcopy]
-interactive-timeout
+bind-address                    = 127.0.0.1
+user                            = mysql
+character_set_server            = utf8mb4
+collation_server                = utf8mb4_general_ci
+transaction_isolation           = READ-COMMITTED
+binlog_format                   = ROW
+innodb_large_prefix             = on
+innodb_file_format              = barracuda
+innodb_file_per_table           = 1
