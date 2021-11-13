@@ -5,7 +5,6 @@ socket                     = /var/run/mysql/mysql.sock
 [client]
 default-character-set      = utf8mb4
 
-## SERVER ##
 [server]
 skip_name_resolve = 1
 innodb_buffer_pool_size = 128M
@@ -25,7 +24,6 @@ long_query_time = 1
 
 [mysqld] 
 pid-file                        = /var/db/mysql/mysql.pid
-bind-address                    = 127.0.0.1
 user                            = mysql
 character_set_server            = utf8mb4
 collation_server                = utf8mb4_general_ci
