@@ -7,7 +7,8 @@ chown mysql /var/log/mysql
 
 CFG_FILE="/usr/local/etc/mysql/my.cnf"
 
-# sed -e "s/<hostname>/$(hostname)/" ${CFG_FILE}.template > ${CFG_FILE}
+mv ${CFG_FILE} ${CFG_FILE}.BU
+mv ${CFG_FILE}.template ${CFG_FILE}
 
 echo "Start mariaDB server"
 service mysql-server start
@@ -17,11 +18,9 @@ MYUSER="root"
 
 PASS=$(</root/mysqlrootpassword)
 
-echo "Passwort = $PASS"
-
 # set mysql-password
 mysqladmin --user=$MYUSER password "$PASS"
-echo "MySQL passwort set"
+echo "MySQL passwort set to $PASS"
 
 # Configure mysql
 mysql -u $MYUSER -p"${PASS}" << EOF
