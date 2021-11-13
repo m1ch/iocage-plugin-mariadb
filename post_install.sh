@@ -1,44 +1,31 @@
 #!/usr/local/bin/bash
 sysrc mysql_enable="YES"
 sysrc mysql_pidfile=/var/db/mysql/mysql.pid
-# sysrc mysql_optfile=/usr/local/etc/my.cnf
 
 mkdir /var/log/mysql
 chown mysql /var/log/mysql
+
+CFG_FILE="/usr/local/etc/mysql/my.cnf"
+
+mv ${CFG_FILE} ${CFG_FILE}.BU
+mv ${CFG_FILE}.template ${CFG_FILE}
 
 echo "Start mariaDB server"
 service mysql-server start
 
 MYUSER="root"
-openssl rand -base64 23 | sed -e 's/=//g' > /root/mysqlrootpassword
-PASS=$(</root/mysqlrootpassword)
+(cat /dev/urandom | strings | tr -dc A-Za-z0-9\?\!\.\#\(\)\-\_ | head -c32; echo) > /root/mysqlrootpassword
 
-echo "Passwort = $PASS"
+PASS=$(</root/mysqlrootpassword)
 
 # set mysql-password
 mysqladmin --user=$MYUSER password "$PASS"
-echo "MySQL passwort set"
+echo "MySQL passwort set to $PASS"
 
 # Configure mysql
 mysql -u $MYUSER -p"${PASS}" << EOF
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${PASS}';
-GRANT ALL PRIVILEGES ON *.* TO '${MYUSER}'@'localhost' WITH GRANT OPTION;
-GRANT ALL PRIVILEGES ON *.* TO '${MYUSER}'@'127.0.0.1' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 DROP DATABASE IF EXISTS test;
 EOF
-
-# chmod +x /usr/local/bin/adminer.sh
-echo "@reboot /usr/local/bin/adminer.sh" | crontab -
-
-at now + 1minute << EOL
-/usr/local/bin/adminer.sh
-EOL
-
-# /usr/local/www/adminer # php -S ip:8080
-# php -S `ifconfig | grep "inet " | grep -v 127.0.0.1 | cut -d" " -f2`:8080
-# sudo -u www php /usr/local/www/nextcloud/occ
-
-# Save the config values 
-#echo "$DB" > /root/dbname
-#echo "$USER" > /root/dbuser
