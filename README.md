@@ -6,6 +6,8 @@ This service provides a mysql server and nothing more!
     iocage fetch --plugin-name "mariadb" --git_repository https://github.com/m1ch/iocage-plugin-index --branch mariadb --name mariadb vnet=On dhcp=Off nat=On
  
 ### Clean-up after testing
+ATTENTION: This deletes the jail and all contianing data!
+
     iocage destroy --recursive mariadb
 
 ## Use the server from the host
